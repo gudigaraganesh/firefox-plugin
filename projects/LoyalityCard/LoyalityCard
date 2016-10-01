@@ -1,0 +1,275 @@
+Script started on Mon 12 May 2014 11:43:01 AM IST
+]0;root@localhost:~/datarx/vcom[?1034h[root@localhost vcom]# /?[K[K./physim /dev/ttyS0 
+fd in open port is 3
+writing byte 02
+writing byte 00
+writing byte 01
+writing byte 4D
+writing byte 03
+writing byte 4F
+recvd 18 bytes
+02
+00
+0D
+50
+D0
+4E
+30
+38
+00
+4E
+31
+30
+00
+4E
+30
+38
+03
+C1
+buf=MO…
+
+
+
+
+
+^^M
+
+
+
+
+
+
+
+recvd -1 bytes
+clear
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+^^C
+
+
+
+
+clar
+
+
+
+recvd -1 bytes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+clear
+
+^C
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# clear
+[H[2J]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# clear./physim /dev/ttyS0 
+fd in open port is 3
+writing byte 02
+writing byte 00
+writing byte 01
+writing byte 4D
+writing byte 03
+writing byte 4F
+recvd 18 bytes
+02
+00
+0D
+50
+D0
+4E
+30
+38
+00
+4E
+31
+30
+00
+4E
+30
+38
+03
+C1
+buf=MOC
+
+
+
+recvd -1 bytes
+^^C^^M
+
+
+
+^C
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# x
+bash: x: command not found
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# clear
+[H[2J]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# clearx[K./physim /dev/ttyS0 
+fd in open port is 3
+writing byte 02
+writing byte 00
+writing byte 01
+writing byte 4D
+writing byte 03
+writing byte 4F
+recvd 104 bytes
+02
+00
+63
+50
+D0
+42
+36
+32
+32
+30
+31
+38
+30
+31
+33
+31
+36
+30
+30
+30
+37
+30
+37
+30
+33
+5E
+4B
+41
+52
+54
+48
+49
+43
+4B
+20
+4B
+20
+47
+20
+20
+20
+20
+20
+20
+20
+20
+20
+20
+20
+20
+20
+2F
+5E
+34
+39
+30
+31
+31
+30
+31
+00
+36
+32
+32
+30
+31
+38
+30
+31
+33
+31
+36
+30
+30
+30
+37
+30
+37
+30
+33
+3D
+34
+39
+30
+31
+31
+30
+31
+32
+30
+38
+30
+30
+30
+30
+30
+30
+30
+00
+4E
+30
+38
+03
+D5
+buf=MO4
+
+
+
+^^@^C
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# 
+]0;root@localhost:~/datarx/vcom[root@localhost vcom]# exit[K[K[K[Kexit
+exit
+
+Script done on Mon 12 May 2014 11:44:52 AM IST

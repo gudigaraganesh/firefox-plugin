@@ -1,0 +1,290 @@
+#ifndef EPHT_H
+#define EPHT_H
+
+enum reggroups 
+{
+        REG_BASIC_CTRL,
+	REG_BASIC_STATUS,
+	REG_PHY_IDENTIFIER1,
+	REG_PHY_IDENTIFIER2,
+	REG_AUTO_NEG_ADV,
+	REG_AUTO_NEG_LINK_PARTNER_ABILITY,
+	REG_AUTO_NEG_EXP,
+	REG_NEXT_PAGE_TRANSMIT,
+	REG_SILICON_REVISION=16,	/* Address 16*/
+	REG_MODE_CTRL_STATUS,	/* Address 17 */
+	REG_SPECIAL_MODES,
+	REG_SMII_CONFIG_STATUS,
+	REG_TSTCNTL,
+	REG_TST_READ1,
+	REG_TST_READ2,
+	REG_TST_WRITE,
+	REG_POWER_DOWN_CTRL,
+	REG_SPECIAL_CTRL_STATUS = 27,
+	REG_SPECIAL_INTERNAL_TESTABILITY_CTRL,
+	REG_INTR_SOURCE,
+	REG_INTR_MASK,
+	REG_PHY_SPECIAL_CTRL
+};
+
+enum basicctrl
+{
+	/* bit 0 to 6 reserved */
+	BASIC_CTRL_CILLISION_TEST = 7,
+	BASIC_CTRL_DUPLEX_MODE,
+	BASIC_CTRL_RESTART_AUTO_NEGOTIATION,
+	BASIC_CTRL_ISOLATION,
+	BASIC_CTRL_POWER_DOWN,
+	BASIC_CTRL_AUTO_NEGOTIATION_ENABLE,
+	BASIC_CTRL_SPEED_SELECT,
+	BASIC_CTRL_LOOPBACK,
+	BASIC_CTRL_RESET
+
+};
+
+
+enum basicstatus
+{
+	BASIC_STATUS_EXTENDED_CAPABALITIES,
+	BASIC_STATUS_JABBER_DETECT,
+	BASIC_STATUS_LINK_STATUS,
+	BASIC_STATUS_AUTO_NEGOTIATE_ABILITY,
+	BASIC_STATUS_REMOTE_FAULT,
+	BASIC_STATUS_AUTO_NEGOTIATE_COMPLETE,
+	/* regsters 6 to 10 are reserved */
+	BASIC_STATUS_BASE_T_HALF_DUPLEX = 11,
+	BASIC_STATUS_BASE_T_FULL_DUPLEX,
+	BASIC_STATUS_BASE_TX_HALF_DUPLEX,
+	BASIC_STATUS_BASE_TX_FULL_DUPLEX
+} ;
+
+
+enum phyidentifier1
+{
+	/* Single bit identifier not handling */
+	
+};
+
+enum phyidentifier2
+{
+	/* macro required */
+};
+
+enum autonegotiationadvertisment
+{
+	AUTO_NEG_ADV_SELECTOR_FIELD, 		/* macro required 0 to 4 */
+	AUTO_NEG_ADV_BASE_T = 5,
+	AUTO_NEG_ADV_BASE_T_FULL_DUPLEX,
+	AUTO_NEG_ADV_BASE_TX,
+	AUTO_NEG_ADV_BASE_TX,
+	AUTO_NEG_ADV_BASE_TX_FULL_DUPLEX,
+	AUTO_NEG_ADV_BASE_T4,
+	AUTO_NEG_ADV_PAUSE_OPERATION,		/* 10 to 11 */
+	/* reserved pin 12 */
+	AUTO_NEG_ADV_REMOTE_FAULT = 13,
+	/* reserved pin 14 */
+	AUTO_NEG_ADV_NEXT_PAGE
+};
+
+enum autoneglinkpartnerabilitypage1
+{
+	/* reg 0 to 4 Selectof fied required macro */
+	AUTO_NEG_LINK_PARTNER_ABILITY_10BASE_T = 5,
+	AUTO_NEG_LINK_PARTNER_ABILITY_10BASE_T_FULL_DUPLEX,
+	AUTO_NEG_LINK_PARTNER_ABILITY_100BASE_TX,
+	AUTO_NEG_LINK_PARTNER_ABILITY_100BASE_TX_FULL_DUPLEX,
+	AUTO_NEG_LINK_PARTNER_ABILITY_100BASE_T4,
+	AUTO_NEG_LINK_PARTNER_ABILITY_PAUSE_OPERATION,
+	/* bit 11 and 12 are reserved */
+	AUTO_NEG_LINK_PARTNER_ABILITY_REMOTE_FAULT = 13,
+	AUTO_NEG_LINK_PARTNER_ABILITY_ACKNOWLEDGE,
+	UTO_NEG_LINK_PARTNER_ABILITY_NEXT_PAGE
+};
+
+
+
+enum autoneglinkpartnerabilitypage2
+{
+	//macro for 0 to 10
+	AUTO_NEG_LINK_PARTNER_ABILITY_TOGGLE = 11,
+	AUTO_NEG_LINK_PARTNER_ABILITY_ACK2,
+	AUTO_NEG_LINK_PARTNER_ABILITY_MSG,
+	AUTO_NEG_LINK_PARTNER_ABILITY_ACK,
+	AUTO_NEG_LINK_PARTNER_ABILITY_NXTPAGE
+}
+
+
+
+enum autnegexp
+{
+	AUTO_NEG_EXP_LINK_PARTNER_AUTO_NEGOTIATION_ABLE,
+	AUTO_NEG_EXP_PAGE_RECEIVED,
+	AUTO_NEG_EXP_NEXT_PAGE_ABLE,
+	AUTO_NEG_EXP_LINK_PARTNER_NEXT_PAGE_ABLE,
+	AUTO_NEG_EXP_PARALLEL_DETECTION_FAULT,
+	/* 5 to 15 to reserved */
+};
+
+enum nextpagetransmit
+{
+	NEXT_PAGE_TRANSMIT_MESSAGE, /*	0 to 10  bit */
+	NEXT_PAGE_TRANSMIT_TOGGLE = 11,
+	NEXT_PAGE_TRANSMIT_ACKNOWLEDGE2,
+	NEXT_PAGE_TRANSMIT_MESSAGE_PAGE,
+	/* bin 14 reserved */
+	NEXT_PAGE_TRANSMIT_NEXT_PAGE = 15
+};
+
+
+enum siliconrevision
+{
+	/* silicon revision  0 to 5 reserved */
+	SILICON_REVISION_SILICON_REVISION, /* 6 to 9 */
+	/* bit 10 to 15 reserved */
+};
+
+enum modecontrolstatus
+{
+	/* bit 0  reserved */
+	MODE_CTRL_STATUS_ENERGYON = 1,
+	MODE_CTRL_STATUS_FORCE_GOOD_LINK_STATUS,
+	MODE_CTRL_STATUS_PHYADBP,
+	MODE_CTRL_STATUS_DCD_PAT_GEN,
+	/* bit 5 reserved */
+	MODE_CTRL_STATUS_MDI_MODE = 6 ,
+	MODE_CTRL_STATUS_AUTOMDIX_EN,
+	MODE_CTRL_STATUS_FASTEST,
+	MODE_CTRL_STATUS_FARLOOPBACK,
+	MODE_CTRL_STATUS_MDPREBP,
+	MODE_CTRL_STATUS_LOWSQEN,
+	/* bit 12 reserved */
+	MODE_CTRL_STATUS_EDPWRDOWN = 13,
+	/* bit 14 reserved */
+	/* bit 15 reserved */
+}; 
+
+
+enum specialmodes
+{
+	/* bit 0 to 4 PHYADD */
+	/* bit 5 to 7  MODE  */
+	SPECIAL_MODES_ADCBP = 8,
+	SPECIAL_MODES_PLLBP,
+	BSPECIAL_MODES_FXMODE,
+	BSPECIAL_MODES_SQBP,
+	BSPECIAL_MODES_DSPBP,
+	BSPECIAL_MODES_CLKSELFREQ,
+	/* bit 14 and 15 macro required */
+};
+
+enum smiiconfigstatus
+{
+	/* bit 0 to 3 reserved */
+	SMII_CONFIG_STATUS_R_EL_BUF_UDF = 4,
+	SMII_CONFIG_STATUS_R_EL_BUF_OVF,
+	SMII_CONFIG_STATUS_T_EL_BUF_UDF,
+	SMII_CONFIG_STATUS_T_EL_BUF_OVF,
+	/* bit 8 and 9 are reserved */
+	SMII_CONFIG_STATUS_LPBK_10HD_SMII_DIS = 10,
+	SMII_CONFIG_STATUS_SMII_SOURCE_SYNC
+	/* bit 12 and 13 macro required */
+	/* bit 14 and 15 macro required */
+};
+
+enum tstcntl
+{
+	/* bit 0 to 4 required macros */
+	/* bit 5 to 9 required macros */
+	TSTCNTL_TEST_MODE = 10,
+	TSTCNTL_WOL_REG_SEL,
+	/* bit 12 to 13 required macros */
+	TSTCNTL_WRITE = 14,
+	TSTCNTL_READ
+};
+
+
+enum tstread1
+{
+	/*  macro required*/ 
+};
+
+
+enum tstread2
+{
+	/*  macro required*/ 
+};
+
+enum tstwrite
+{
+	/*  macro required*/ 
+};
+
+
+enum powerdownctrl
+{
+	POWER_DOWN_CTRL_TRUE_POWER_DOWN,
+	POWER_DOWN_CTRL_POWER_UP_RESET
+	/* bit 2 to 15 reserved */
+};
+
+enum special_ctrl_status
+{
+	/* bit 0 to 3 reserved */
+	SPECIAL_CTRL_STATUS_XPOL = 4,
+	SPECIAL_CTRL_STATUS_FEFIEN,
+	/* bit 6 to 10 reserved */
+	SPECIAL_CTRL_STATUS_SQEOFF = 11,
+	SPECIAL_CTRL_STATUS_SWRST_FAST,
+	/* bit 13 to 15 reserved */
+};
+
+enum specialinternaltestabilityctrl
+{
+	/* bit 0 to 2 reserved */
+	SPECIAL_INTERNAL_TESTABILITY_CTRL_PATTERN_GEN_EN = 3
+	/* bit 4 to 5 macro required */
+	/* bit 6 to 7 reserved */
+	/* bit 8 to 15 reserved */
+
+};
+
+
+
+enum intsrcflags
+{
+	//macro for 0	
+	REG_INTR_SOURCE_INT1 = 1,
+	REG_INTR_SOURCE_INT2,
+	REG_INTR_SOURCE_INT3,
+	REG_INTR_SOURCE_INT4,
+	REG_INTR_SOURCE_INT5,
+	REG_INTR_SOURCE_INT6,
+	REG_INTR_SOURCE_INT7,
+	REG_INTR_SOURCE_INT8,
+	REG_INTR_SOURCE_INT9,
+	REG_INTR_SOURCE_INT10,
+	REG_INTR_SOURCE_INT11
+	//macro for 12, 13 to 15
+
+};
+
+enum regintmask
+{
+	//macro for all
+};
+
+enum physpecialctrl
+{
+	PHY_SPECIAL_CTRL_SCRAMBLE_DISABLE,
+	//macro requared 1, 2 to 4, and 5
+	PHY_SPECIAL_CTRL_ENABLE_4B5B = 6,
+	//macro 7 to 11	
+	PHY_SPECIAL_CTRL_AUTODONE = 12,
+	//macro 13 and 14
+	PHY_SPECIAL_CTRL_BPRMG = 15
+};
+
+
+
+#endif
+

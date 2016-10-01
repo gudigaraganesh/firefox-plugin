@@ -1,0 +1,224 @@
+
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*****/
+/** NUSERIAL.C************************/
+
+#include <stdio.h>		/* Standard input/output definitions */
+#include <string.h>		/* String function definitions */
+#include <unistd.h>		/* UNIX standard function definitions */
+#include <fcntl.h>		/* File control definitions */
+#include <errno.h>		/* Error number definitions */
+#include <termios.h>		/* POSIX terminal control definitions */
+#include<poll.h>
+#include"nuserial.h"
+#include "swipe.h"
+
+nu_serialport_t nuPort = { 0 };
+
+unsigned char *gbbuf = NULL;
+//# define dbg(format, ...arg) print ("%s ["__FILE__":%d]-> "format, __FUNCTION__, __LINE__,  ##arg)
+#define DPRINT printf
+
+
+char holdername[256]={0};
+
+enum {
+	CARDNUMBER=0,
+	EXPIRYDATE,
+	CARDHOLDER,
+	TRACK2
+};
+
+void update_card_number(char *dest, char *ref, int len)
+{
+memset(dest,0, len);
+strcpy(dest, "GET |");
+strncat(dest, &ref[6], len-6);
+strcat(dest,"|");
+}
+
+
+void update_expire_date(char *dest, char *ref, int len)
+{
+char *newptr = dest + strlen(dest);
+   memset(newptr, 0, len);
+strncat(newptr, &ref[0], 4);
+strcat(newptr,"|");
+}
+
+void update_card_holder(char *dest, char *ref, int len)
+{
+char *newptr = dest + strlen(dest);
+   memset(newptr, 0, len+1);
+strncat(holdername, &ref[0], len-6);
+}
+
+
+int
+process_swipe_data (char *result, long timeout)
+{
+	int track2_detect = 0;
+	int data_found = 0;
+	int card_holder = 0;
+	unsigned int ptrpos = 0;
+    int canread = 0;
+    int r = 0;
+    int ret_read = -1;
+    int retries = 10;
+    char baudstr[100] = { 0 };
+    char  rport[257]={0};
+    int rxlen = 0;
+    char buf[20];
+    int x = 0;
+    int baud = 19200;
+    nu_serialport_t *lpPort = &nuPort;
+    gbbuf = (unsigned char *)lpPort->txbuf;
+    char portname[100] = { 0 };
+    memset (&nuPort, 0, sizeof (nuPort));
+    FILE *fp = fopen ("/etc/sport-cardreader", "r");
+    if (fp == NULL)
+      {
+	  strcpy (portname, "/dev/ttyS2");
+      } else {
+    fgets (rport, 100, fp);
+    fgets (baudstr, 100, fp);
+     sscanf(rport,"%s\n",portname);
+    sscanf (baudstr, "%d", &baud);
+    fclose (fp);
+    }
+	printf("Selected %s port with %d baud\n",portname, baud);
+
+    lpPort->fd = nu_serialport_open (lpPort, portname);
+    if (lpPort->fd < 0)
+      {
+	  return -1;
+      }
+    if (baud < 9600)
+	baud = 19200;
+    nu_serialport_configure (lpPort, baud, BINARY_MODE);
+
+    buf[0] = 0x02;
+    buf[1] = 0x0;
+    buf[2] = 0x01;
+    buf[3] = 0x4d;
+    buf[4] = 0x03;
+    buf[5] = 0x4f;
+    nu_serialport_write (lpPort, buf, 6);
+    while (r < retries)
+      {
+	  ret_read = nu_watch_serial_data (lpPort->fd, timeout / 10);
+	  if (ret_read == SPORT_READ)
+	    {
+		canread = 1;
+		break;
+	    }
+      }
+    if (canread == 0)
+      {
+	   close(lpPort->fd);
+	  return -10;
+      }
+    rxlen = 0;
+    rxlen = nu_serialport_read (lpPort, lpPort->rxbuf, MAX_RXBUF_SZ)
+		;
+			
+    if (rxlen > 0)
+      {
+	  int trackstate = 0;
+	  printf ("recvd %d bytes\n", rxlen);
+		if(lpPort->rxbuf[3] == 0x4E) {
+			if(lpPort->rxbuf[4] == 0x30)
+			{
+			   switch(lpPort->rxbuf[5])
+			   {
+			    case 0x32:
+				/* strcpy(result, "card not found");*/
+                                strcpy(result, "");
+				 break;
+			    case 0x33:
+				strcpy(result, "card fail");
+                                
+				break;
+			    case 0x34:
+				strcpy(result, "card jam");
+				break;
+			case 0x35:
+				strcpy(result, "data fail");
+				break;
+			default:
+				strcpy(result, "invalid card format");
+				break;
+			  }
+
+
+			}
+		        else
+			strcpy(result,"invalid card format");
+		  return 0;
+		}
+
+	  for (x = 0; x < rxlen; x++)
+	    {
+		int done = 0;
+		switch (trackstate)
+		  {
+		  case CARDNUMBER:
+			data_found = 1;
+		      if (lpPort->rxbuf[x] == 0x5E) {
+		         update_card_number (result, lpPort->rxbuf, x);
+			  trackstate = CARDHOLDER;
+			  ptrpos = x;
+		      }
+		      break;
+		  case EXPIRYDATE:
+		      update_expire_date (result, &lpPort->rxbuf[ptrpos+1], 4);
+			  trackstate = TRACK2;
+			  x =  x+4;
+			  ptrpos = x;
+		      break;
+		  case CARDHOLDER :
+		      if (lpPort->rxbuf[x] == 0x5E) {
+			card_holder = 1;
+		      update_card_holder (result, &lpPort->rxbuf[ptrpos+1], x-ptrpos);
+			  trackstate = EXPIRYDATE;
+			  ptrpos = x;
+		      }
+		      break;
+		  case TRACK2:
+			printf("Entering track2\n");
+		      if (lpPort->rxbuf[x] == 0x00 ) {
+			printf("3B entered\n");
+			   int i1 = x;
+			   char *dest = strlen(result) + result;
+			   while( (lpPort->rxbuf[i1] != 0x1d) &&  (i1 < rxlen)){
+				if(lpPort->rxbuf[i1] == '=')
+				lpPort->rxbuf[i1] = 'D';
+			i1++;
+			}
+			track2_detect = 1;
+			strncat(result,&lpPort->rxbuf[x+1],i1-x);
+			strcat(result, "|");
+			done = 1;
+			printf("entered\n");
+		      }
+		      break;
+		  }
+		printf ("%02X\n", (unsigned char) lpPort->rxbuf[x]);
+		if(done)
+		   break;
+	    }
+		strcat(result, holdername);
+		memset(holdername, 0, 256);
+		
+		
+		if((track2_detect == 0) && (card_holder == 0))
+		{
+			if(data_found == 1)
+			strcpy(result,"invalid card format");
+			else
+			strcpy(result," ");
+		}
+	//tcflush(lpPort->fd);
+      }
+    close(lpPort->fd);
+    return 0;
+}
